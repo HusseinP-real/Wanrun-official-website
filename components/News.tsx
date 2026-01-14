@@ -1,6 +1,7 @@
 import React from 'react';
 import { NewsItem } from '../types';
 import { ArrowRight, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 // Using "Development History" from PDF as News Items
 const FEATURED_NEWS: NewsItem = {
@@ -24,24 +25,41 @@ const News: React.FC = () => {
   return (
     <section id="news" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="flex justify-between items-end mb-12">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">发展历程</h2>
             <p className="text-gray-500 uppercase text-sm tracking-wider">Development History</p>
-          </div>
-          <div className="hidden md:block w-32 h-px bg-gray-200 mb-4"></div>
+          </motion.div>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="hidden md:block w-32 h-px bg-gray-200 mb-4 origin-left"
+          ></motion.div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          
+
           {/* Featured/Latest Milestone */}
-          <div className="group cursor-pointer">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="group cursor-pointer"
+          >
             <div className="relative overflow-hidden rounded-sm mb-4 border border-gray-100">
-              <img 
-                src={FEATURED_NEWS.imageUrl} 
-                alt={FEATURED_NEWS.title} 
+              <img
+                src={FEATURED_NEWS.imageUrl}
+                alt={FEATURED_NEWS.title}
                 className="w-full h-80 object-cover transform transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute top-4 left-4 bg-primary-accent text-white text-xs px-3 py-1 font-medium">
@@ -55,13 +73,20 @@ const News: React.FC = () => {
             <p className="text-gray-600 line-clamp-3 leading-relaxed">
               {FEATURED_NEWS.summary}
             </p>
-          </div>
+          </motion.div>
 
           {/* Timeline List */}
           <div className="flex flex-col justify-start">
             <div className="divide-y divide-gray-100">
-              {NEWS_LIST.map((item) => (
-                <div key={item.id} className="py-6 first:pt-0 group cursor-pointer hover:bg-gray-50 px-4 -mx-4 transition-colors rounded-sm">
+              {NEWS_LIST.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="py-6 first:pt-0 group cursor-pointer hover:bg-gray-50 px-4 -mx-4 transition-colors rounded-sm"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0 w-16 pt-1">
@@ -69,7 +94,7 @@ const News: React.FC = () => {
                       </div>
                       <div>
                         <div className="mb-1">
-                           <span className="text-xs text-primary bg-primary/5 px-2 py-0.5 rounded text-opacity-70">
+                          <span className="text-xs text-primary bg-primary/5 px-2 py-0.5 rounded text-opacity-70">
                             {item.category}
                           </span>
                         </div>
@@ -80,10 +105,10 @@ const News: React.FC = () => {
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-primary-accent transform group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100" />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-            
+
           </div>
 
         </div>

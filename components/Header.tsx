@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavItem } from '../types';
 import { Menu, X, Layers } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_ITEMS: NavItem[] = [
   { label: '首页', href: '#home' },
@@ -25,10 +26,12 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen ? 'bg-white shadow-md py-4' : 'bg-transparent py-6'
-      }`}
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-white shadow-md py-4' : 'bg-transparent py-6'
+        }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -53,9 +56,8 @@ const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className={`text-sm font-medium transition-colors relative group ${
-                  isScrolled ? 'text-gray-700 hover:text-primary-accent' : 'text-white/90 hover:text-white'
-                }`}
+                className={`text-sm font-medium transition-colors relative group ${isScrolled ? 'text-gray-700 hover:text-primary-accent' : 'text-white/90 hover:text-white'
+                  }`}
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-accent transition-all group-hover:w-full"></span>
@@ -78,23 +80,29 @@ const Header: React.FC = () => {
       </div>
 
       {/* Mobile Navigation Dropdown */}
-      <div
-        className={`fixed inset-0 bg-white z-40 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col items-center justify-center space-y-8 ${
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        {NAV_ITEMS.map((item) => (
-          <a
-            key={item.label}
-            href={item.href}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-2xl font-medium text-gray-800 hover:text-primary-accent"
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: "tween", duration: 0.3 }}
+            className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 md:hidden"
           >
-            {item.label}
-          </a>
-        ))}
-      </div>
-    </header>
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-2xl font-medium text-gray-800 hover:text-primary-accent"
+              >
+                {item.label}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 
